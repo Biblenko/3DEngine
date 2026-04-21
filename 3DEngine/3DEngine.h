@@ -12,7 +12,7 @@
 
 // CMy3DEngineApp:
 // See 3DEngine.cpp for the implementation of this class
-//
+// First commit
 
 class CMy3DEngineApp : public CWinAppEx
 {
