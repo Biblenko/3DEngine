@@ -182,3 +182,56 @@ void CMy3DEngineApp::OnAppAbout()
 
 
 
+
+int CMy3DEngineApp::Run()
+{
+	MSG msg = { 0 };
+
+	// Кеш
+
+	CMy3DEngineView* pMyView = NULL;
+
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	if (pMainFrame) {
+		pMyView = (CMy3DEngineView*)pMainFrame->GetActiveView();
+	}
+
+	// Проверка на валидность перед циклом
+	if (!pMyView) return CWinApp::Run();
+
+	while (msg.message != WM_QUIT)
+	{
+		// Если есть сообщения в очереди — обрабатываем их ВСЕ
+		if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT) break;
+
+			if (!PreTranslateMessage(&msg))
+			{
+				::TranslateMessage(&msg);
+				::DispatchMessage(&msg);
+			}
+		}
+		else
+		{
+			// Очередь пуста — самое время рисовать
+
+			// Проверка "на лету" без лишних вызовов API, 
+			// если добавить переменную m_bIsAppActive в класс App и менять её в OnActivateApp
+			// Но даже ваш вариант с IsIconic() допустим, если не хочется усложнять.
+
+			if (pMainFrame->IsWindowVisible() && !pMainFrame->IsIconic())
+			{
+				// Прямой вызов без кастов и поисков
+				pMyView->Render();
+			}
+			else
+			{
+				// Приложение свернуто — ждем сообщений, чтобы не грузить CPU
+				::WaitMessage();
+			}
+		}
+	}
+
+	return (int)msg.wParam;
+}

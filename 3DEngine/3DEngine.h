@@ -28,6 +28,7 @@ public:
 // Implementation
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+	virtual int Run();
 };
 
 extern CMy3DEngineApp theApp;

@@ -5,6 +5,10 @@
 #pragma once
 
 
+#include "OpenGL.h"
+#include "ResourceManager.h"
+#include "MeshGenerator.h"
+
 class CMy3DEngineView : public CView
 {
 protected: // create from serialization only
@@ -15,6 +19,9 @@ protected: // create from serialization only
 public:
 	CMy3DEngineDoc* GetDocument() const;
 
+	Engine::OpenGL m_openGL;
+
+	Engine::ResourceManager m_resourceManager;
 // Operations
 public:
 
@@ -40,6 +47,12 @@ protected:
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual void OnInitialUpdate();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	void Render();
 };
 
 #ifndef _DEBUG  // debug version in 3DEngineView.cpp

@@ -3,15 +3,35 @@
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>
+      </Extensions>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+      <Extensions>
+      </Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{99a488a0-998c-4db7-a578-e495c11deab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\OpenGL">
+      <UniqueIdentifier>{c1f9d145-3e42-4f0a-b99e-84ed1d9db4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\OpenGL\Shaders">
+      <UniqueIdentifier>{ddb66232-afa8-4f0d-a1cd-0d7f94d30e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Mesh">
+      <UniqueIdentifier>{a8e51972-2786-4288-a599-bdd28ef5452b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResorsceManager">
+      <UniqueIdentifier>{e961af70-a62f-4182-aaeb-734ccac5d7e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResorsceManager\Resource">
+      <UniqueIdentifier>{5768f997-db94-49ee-b594-5915955bcad6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +59,30 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Main\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshGenerator.h">
+      <Filter>Main\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Main\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>ResorsceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>ResorsceManager\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ResorsceManager\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>ResorsceManager\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEngine.cpp">
@@ -56,6 +100,27 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL.cpp">
+      <Filter>Main\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshGenerator.cpp">
+      <Filter>Main\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Main\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>ResorsceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>ResorsceManager\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ResorsceManager\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>ResorsceManager\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My3DEngine.rc">
@@ -65,6 +130,12 @@
   <ItemGroup>
     <None Include="res\My3DEngine.rc2">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\spriteTest.frag">
+      <Filter>Main\OpenGL\Shaders</Filter>
+    </None>
+    <None Include="Shaders\spriteTest.vert">
+      <Filter>Main\OpenGL\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
