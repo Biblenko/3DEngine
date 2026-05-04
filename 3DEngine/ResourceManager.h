@@ -38,9 +38,16 @@ namespace Engine
             const std::string& textureName, 
             const std::string& shaderName, 
             const unsigned int spriteWidth, 
-            const unsigned int spriteHeight);
+            const unsigned int spriteHeight,
+            const std::string& subTextureName);
 
         std::shared_ptr<Sprite> getSprite(const std::string& spriteName) const;
+
+        std::shared_ptr<Texture2D> loadTextureAtlas(const std::string& textureName,
+                                                    const std::string& texturePath,
+                                                    std::vector<std::string> subTextureName,
+                                                    const unsigned int subTextureWidth, 
+                                                    const unsigned int subTextureHeight);
 
         std::shared_ptr<Mesh> loadMesh(const std::string& mashName, const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices);
         std::shared_ptr<Mesh> loadMesh(const std::string& mashName, std::shared_ptr<Mesh>);

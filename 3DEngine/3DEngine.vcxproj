@@ -95,8 +95,8 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)\external\glew-2.2.0\include;$(SolutionDir)\external\glfw-3.4\include;$(SolutionDir)\external\glm-1.0.1-light;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,24 +202,37 @@
     <ClInclude Include="3DEngine.h" />
     <ClInclude Include="3DEngineDoc.h" />
     <ClInclude Include="3DEngineView.h" />
+    <ClInclude Include="BasicRenderSystem.h" />
+    <ClInclude Include="CameraControlSystem.h" />
+    <ClInclude Include="Components.h" />
+    <ClInclude Include="ECS.h" />
+    <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="ISystem.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshGenerator.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Registry.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="SparseSet.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteRenderSystem.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEngine.cpp" />
     <ClCompile Include="3DEngineDoc.cpp" />
     <ClCompile Include="3DEngineView.cpp" />
+    <ClCompile Include="BasicRenderSystem.cpp" />
+    <ClCompile Include="CameraControlSystem.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshGenerator.cpp" />
@@ -233,13 +246,17 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteRenderSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My3DEngine.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\My3DEngine.rc2" />
+    <None Include="Shaders\basic.frag" />
+    <None Include="Shaders\basic.vert" />
     <None Include="Shaders\spriteTest.frag" />
     <None Include="Shaders\spriteTest.vert" />
   </ItemGroup>

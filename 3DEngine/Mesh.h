@@ -15,6 +15,8 @@ namespace Engine
         unsigned int m_indexCount = 0;
 
     public:
+        
+
         Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices);
 
         Mesh(const Mesh&) = delete;

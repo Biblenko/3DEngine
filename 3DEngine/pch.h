@@ -8,6 +8,14 @@
 #define PCH_H
 
 // add headers that you want to pre-compile here
+#include <GL/glew.h>
+
 #include "framework.h"
+#include <afxcontrolbars.h>
+
+#include <GL/GLU.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #endif //PCH_H

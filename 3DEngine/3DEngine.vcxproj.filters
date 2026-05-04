@@ -33,6 +33,27 @@
     <Filter Include="ResorsceManager\Resource">
       <UniqueIdentifier>{5768f997-db94-49ee-b594-5915955bcad6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\Engine">
+      <UniqueIdentifier>{fbc2c17c-9557-411b-a825-43d0a7c8a24e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Engine\Timer">
+      <UniqueIdentifier>{919a5d45-14c3-4d67-b544-90a7c915d5f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Engine\Core">
+      <UniqueIdentifier>{20d8af1a-ea77-4e37-8a27-e83c030df26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Engine\Systems">
+      <UniqueIdentifier>{6a0fa2f0-a099-46f8-a9bf-4d468f151187}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Engine\Event">
+      <UniqueIdentifier>{e22c3e17-a2da-4d77-8082-8406d9bba498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Engine\Systems\Render">
+      <UniqueIdentifier>{e28ecb90-fcfc-463f-aa19-8559dd065b89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Engine\Systems\Logic">
+      <UniqueIdentifier>{caed1508-cea6-4f61-bc96-e5f2bef99b92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DEngine.h">
@@ -83,6 +104,37 @@
     <ClInclude Include="Texture2D.h">
       <Filter>ResorsceManager\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Main\Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseSet.h">
+      <Filter>Main\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Registry.h">
+      <Filter>Main\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ISystem.h">
+      <Filter>Main\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Main\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS.h">
+      <Filter>Main\Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDispatcher.h">
+      <Filter>Main\Engine\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicRenderSystem.h">
+      <Filter>Main\Engine\Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Main\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControlSystem.h">
+      <Filter>Main\Engine\Systems\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEngine.cpp">
@@ -121,6 +173,16 @@
     <ClCompile Include="Texture2D.cpp">
       <Filter>ResorsceManager\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Main\Engine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicRenderSystem.cpp">
+      <Filter>Main\Engine\Systems\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControlSystem.cpp">
+      <Filter>Main\Engine\Systems\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My3DEngine.rc">
@@ -135,6 +197,12 @@
       <Filter>Main\OpenGL\Shaders</Filter>
     </None>
     <None Include="Shaders\spriteTest.vert">
+      <Filter>Main\OpenGL\Shaders</Filter>
+    </None>
+    <None Include="Shaders\basic.vert">
+      <Filter>Main\OpenGL\Shaders</Filter>
+    </None>
+    <None Include="Shaders\basic.frag">
       <Filter>Main\OpenGL\Shaders</Filter>
     </None>
   </ItemGroup>

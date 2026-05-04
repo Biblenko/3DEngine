@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Texture2D.h"
 
+
+
 Engine::Texture2D::Texture2D(const GLuint width, const GLuint height,
 	const unsigned char* data,
 	const unsigned int chanels,
@@ -61,6 +63,22 @@ Engine::Texture2D::Texture2D(Texture2D&& texture2d)
 Engine::Texture2D::~Texture2D()
 {
 	glDeleteTextures(1, &m_ID);
+}
+
+void Engine::Texture2D::addSubTexture(std::string name, const glm::vec2& leftBottomUV, glm::vec2& rightTopUV)
+{
+	m_subTextures.emplace(name, SubTexture2D(leftBottomUV, rightTopUV));
+}
+
+const Engine::Texture2D::SubTexture2D& Engine::Texture2D::getSubTexture(const std::string& name)
+{
+	auto it = m_subTextures.find(name);
+	if (it != m_subTextures.end())
+	{
+		return it->second;
+	}
+	const static SubTexture2D defaultSubTexture;
+	return defaultSubTexture;
 }
 
 void Engine::Texture2D::bind() const

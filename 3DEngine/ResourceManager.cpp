@@ -121,7 +121,8 @@ namespace Engine
         const std::string& textureName, 
         const std::string& shaderName, 
         const unsigned int spriteWidth, 
-        const unsigned int spriteHeight)
+        const unsigned int spriteHeight,
+        const std::string& subTextureName)
     {
         auto pTexture = getTexture(textureName);
         if (!pTexture) {
@@ -136,7 +137,8 @@ namespace Engine
         }
 
         std::shared_ptr<Sprite> sprite = m_sprites.emplace(spriteName, std::make_shared<Sprite>(
-            pTexture, 
+            pTexture,
+            subTextureName,
             pShader, 
             glm::vec2(0.f, 0.f),
             glm::vec2(spriteWidth, spriteHeight))).first->second;
@@ -155,6 +157,42 @@ namespace Engine
 
         std::cerr << "ResourceManager: Sprite не найден в кэше: " << spriteName << std::endl;
         return nullptr;
+    }
+
+    std::shared_ptr<Texture2D> ResourceManager::loadTextureAtlas(const std::string& textureName, 
+                                                                const std::string& texturePath, 
+                                                                std::vector<std::string> subTextures,
+                                                                const unsigned int subTextureWidth, 
+                                                                const unsigned int subTextureHeight)
+    {
+        auto pTexture = loadTexture(textureName, texturePath);
+        if (pTexture)
+        {
+            const unsigned int textureWidth = pTexture->width(); 
+            const unsigned int textureHeight = pTexture->height(); 
+
+            unsigned int currentTextureOffsetX = 0;
+            unsigned int currentTextureOffsetY = textureHeight;
+
+            
+
+            for (const auto& currentSubTextureName : subTextures)
+            {
+                glm::vec2 leftBottomUV((float)currentTextureOffsetX / textureWidth, (float)(currentTextureOffsetY - subTextureHeight) / textureHeight);
+                glm::vec2 rightTopUV((float)(currentTextureOffsetX + subTextureWidth) / textureWidth, (float)(currentTextureOffsetY) / textureHeight);
+
+                pTexture->addSubTexture(currentSubTextureName, leftBottomUV, rightTopUV);
+
+                currentTextureOffsetX += subTextureWidth;
+                if (currentTextureOffsetX >= textureWidth)
+                {
+                    currentTextureOffsetX = 0;
+                    currentTextureOffsetY -= subTextureHeight;
+                }
+            }
+
+        }
+        return pTexture;
     }
 
     std::shared_ptr<Mesh> ResourceManager::loadMesh(const std::string& mashName, const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices)

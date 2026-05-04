@@ -9,8 +9,8 @@
 #include "Texture2D.h"
 
 
-
 Engine::Sprite::Sprite(	const std::shared_ptr<Texture2D> pTexture, 
+						const std::string initialSubTextureName,
 						const std::shared_ptr<ShaderProgram> pShaderProgram, 
 						const glm::vec2& position, 
 						const glm::vec2& scale, 
@@ -32,7 +32,9 @@ Engine::Sprite::Sprite(	const std::shared_ptr<Texture2D> pTexture,
 		0.f, 0.f
 	};
 
-	GLfloat textureCoordinate[] =
+	const auto& subTexture = pTexture->getSubTexture(initialSubTextureName);
+
+	GLfloat ftextureCoordinate[] =
 	{
 		0.f, 0.f,
 		1.f, 0.f,
@@ -41,6 +43,17 @@ Engine::Sprite::Sprite(	const std::shared_ptr<Texture2D> pTexture,
 		1.f, 1.f,
 		0.f, 1.f,
 		0.f, 0.f
+	};
+
+	GLfloat textureCoordinate[] =
+	{
+		subTexture.leftBottomUV.x, subTexture.leftBottomUV.y,
+		subTexture.rightTopUV.x, subTexture.leftBottomUV.y,
+		subTexture.rightTopUV.x, subTexture.rightTopUV.y,
+
+		subTexture.rightTopUV.x, subTexture.rightTopUV.y,
+		subTexture.leftBottomUV.x, subTexture.rightTopUV.y,
+		subTexture.leftBottomUV.x, subTexture.leftBottomUV.y
 	};
 
 	glGenVertexArrays(1, &m_VAO);

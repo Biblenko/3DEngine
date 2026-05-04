@@ -8,6 +8,9 @@
 #include "OpenGL.h"
 #include "ResourceManager.h"
 #include "MeshGenerator.h"
+#include "Timer.h"
+#include "InputManager.h"
+#include "ECS.h"
 
 class CMy3DEngineView : public CView
 {
@@ -22,6 +25,10 @@ public:
 	Engine::OpenGL m_openGL;
 
 	Engine::ResourceManager m_resourceManager;
+
+	Engine::Timer m_timer;
+
+	Engine::ECS m_ECS;
 // Operations
 public:
 
@@ -53,6 +60,7 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	void Render();
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 };
 
 #ifndef _DEBUG  // debug version in 3DEngineView.cpp

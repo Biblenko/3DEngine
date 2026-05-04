@@ -118,19 +118,11 @@ void CMy3DEngineView::OnSize(UINT nType, int cx, int cy)
 
 	m_openGL.SetViewport(cx, cy);
 
-	glm::mat4 projection = glm::ortho(
-		0.0f, static_cast<float>(cx),
-		0.0f, static_cast<float>(cy),
-		-1.0f, 1.0f   
-	);
+	m_ECS.m_registry.Each<Engine::CameraComponent>([&cx, &cy](Engine::EntityID entity, Engine::CameraComponent  &camera) {
+		camera.SetAspect((float)cx, (float)cy);
+	});
 
-
-	auto pSpriteShaderProgram = m_resourceManager.getShader("SpriteShader");
-	if (pSpriteShaderProgram)
-	{
-		pSpriteShaderProgram->use();
-		pSpriteShaderProgram->setMatrix4("projection", projection);
-	}
+	Render();
 }
 
 int CMy3DEngineView::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -145,24 +137,7 @@ int CMy3DEngineView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	Engine::ResourceManager::Instance = &m_resourceManager;
 
-	auto pSpriteShaderProgram = m_resourceManager.loadShader("SpriteShader", "Shaders/spriteTest.vert", "Shaders/spriteTest.frag");
-	if (!pSpriteShaderProgram) {
-		return -1;
-	}
-
-	auto pTexture = m_resourceManager.loadTexture("JupiterTexture", "Textures/jupiter.jpg");
-	if (!pTexture) {
-		return -1;
-	}
-
-	glm::mat4 projection = glm::ortho(-100.f, 100.f, -100.f, 100.f, -100.f, 100.f);
-
-	auto pSprite = m_resourceManager.loadSprite("JupiterSprite", "JupiterTexture", "SpriteShader", 100 , 50);
-
-	pSpriteShaderProgram->use();
-	pSpriteShaderProgram->setInt("tex", 0);
-	pSpriteShaderProgram->setMatrix4("projection", projection);
-
+	m_ECS.Init();
 
 	return 0;
 }
@@ -178,7 +153,7 @@ void CMy3DEngineView::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == 1)
 	{
-		Invalidate(FALSE);
+		
 	}
 
 	CView::OnTimer(nIDEvent);
@@ -186,9 +161,24 @@ void CMy3DEngineView::OnTimer(UINT_PTR nIDEvent)
 
 void CMy3DEngineView::Render()
 {
+	m_timer.Tick();
+
 	m_openGL.MakeCurrent();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	m_ECS.FixedUpdate(m_timer.GetDeltaTime());
+
+	m_ECS.Update(m_timer.GetDeltaTime());
+
+	m_ECS.Render();
+
 	m_openGL.SwapBuffers();
+}
+
+LRESULT CMy3DEngineView::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	m_ECS.m_inputManager.ProcessMessage(message, wParam, lParam);
+
+	return CView::WindowProc(message, wParam, lParam);
 }

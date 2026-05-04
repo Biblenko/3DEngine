@@ -12,11 +12,9 @@ namespace Engine
         ShaderProgram(const std::string& vertexSource, const std::string& fragmentSource);
         ~ShaderProgram();
 
-        // Запрет копирования
         ShaderProgram(const ShaderProgram&) = delete;
         ShaderProgram& operator=(const ShaderProgram&) = delete;
 
-        // Корректная семантика перемещения
         ShaderProgram(ShaderProgram&& other) noexcept;
         ShaderProgram& operator=(ShaderProgram&& other) noexcept;
 
@@ -27,6 +25,7 @@ namespace Engine
         void setFloat(const std::string& name, GLfloat value);
         void setVec3(const std::string& name, const glm::vec3& value);
         void setMatrix4(const std::string& name, const glm::mat4& matrix);
+        void setMatrix3(const std::string& name, const glm::mat3& matrix);
 
         GLint getUniformLocation(const std::string& name);
 

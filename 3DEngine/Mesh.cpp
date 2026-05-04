@@ -12,20 +12,29 @@ namespace Engine
         glBindVertexArray(m_VAO);
 
         glGenBuffers(1, &m_VBO);
+
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 
         glGenBuffers(1, &m_EBO);
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
-        // Атрибут 0: Координаты (X, Y, Z) - 3 float, шаг 5 float, смещение 0
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+        // Общий шаг (stride) теперь 8 float (3 позиция + 3 нормаль + 2 текстура)
+        GLsizei stride = 8 * sizeof(GLfloat);
 
-        // Атрибут 1: Текстурные координаты (U, V) - 2 float, шаг 5 float, смещение 3 float
+        // Атрибут 0: Координаты (X, Y, Z) - 3 float, смещение 0
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+
+        // Атрибут 1: Нормали (Nx, Ny, Nz) - 3 float, смещение 3 float
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(GLfloat)));
+
+        // Атрибут 2: Текстурные координаты (U, V) - 2 float, смещение 6 float
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(GLfloat)));
 
         glBindVertexArray(0);
     }
@@ -70,7 +79,9 @@ namespace Engine
     void Mesh::render() const
     {
         glBindVertexArray(m_VAO);
+
         glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, nullptr);
-        glBindVertexArray(0);
+
+        //glBindVertexArray(0);
     }
 }
