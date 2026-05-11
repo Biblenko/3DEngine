@@ -167,10 +167,13 @@ namespace Engine {
         glClearColor(0.8f, 0.9f, 1.0f, 1.0f);
 
         // ✅ Если используете освещение
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-        glEnable(GL_COLOR_MATERIAL);
-        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+        //glEnable(GL_LIGHTING);
+        //glEnable(GL_LIGHT0);
+        //glEnable(GL_COLOR_MATERIAL);
+        //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void OpenGL::Cleanup() {

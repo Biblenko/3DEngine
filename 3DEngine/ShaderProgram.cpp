@@ -148,6 +148,39 @@ namespace Engine
         glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
+
+
+    void ShaderProgram::setInt(GLint location, GLint value)
+    {
+        assert(m_isCompiled);
+        glUniform1i(location, value);
+    }
+
+    void ShaderProgram::setFloat(GLint location, GLfloat value)
+    {
+        assert(m_isCompiled);
+        glUniform1f(location, value);
+    }
+
+    void ShaderProgram::setVec3(GLint location, const glm::vec3& value)
+    {
+        assert(m_isCompiled);
+        glUniform3fv(location, 1, glm::value_ptr(value));
+    }
+
+    void ShaderProgram::setMatrix4(GLint location, const glm::mat4& matrix)
+    {
+        assert(m_isCompiled);
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    void ShaderProgram::setMatrix3(GLint location, const glm::mat3& matrix)
+    {
+        assert(m_isCompiled);
+        glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+
     GLint ShaderProgram::getUniformLocation(const std::string& name)
     {
         assert(m_isCompiled);

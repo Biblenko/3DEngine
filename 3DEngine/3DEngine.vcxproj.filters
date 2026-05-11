@@ -15,44 +15,50 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{99a488a0-998c-4db7-a578-e495c11deab6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\OpenGL">
-      <UniqueIdentifier>{c1f9d145-3e42-4f0a-b99e-84ed1d9db4eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\OpenGL\Shaders">
-      <UniqueIdentifier>{ddb66232-afa8-4f0d-a1cd-0d7f94d30e8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Mesh">
-      <UniqueIdentifier>{a8e51972-2786-4288-a599-bdd28ef5452b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ResorsceManager">
       <UniqueIdentifier>{e961af70-a62f-4182-aaeb-734ccac5d7e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="ResorsceManager\Resource">
       <UniqueIdentifier>{5768f997-db94-49ee-b594-5915955bcad6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Engine">
+    <Filter Include="GUI">
+      <UniqueIdentifier>{dd6c5624-3d59-499b-9ee7-4fc6120de710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{99a488a0-998c-4db7-a578-e495c11deab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\OpenGL">
+      <UniqueIdentifier>{c1f9d145-3e42-4f0a-b99e-84ed1d9db4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\OpenGL\Shaders">
+      <UniqueIdentifier>{ddb66232-afa8-4f0d-a1cd-0d7f94d30e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Mesh">
+      <UniqueIdentifier>{a8e51972-2786-4288-a599-bdd28ef5452b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine">
       <UniqueIdentifier>{fbc2c17c-9557-411b-a825-43d0a7c8a24e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Engine\Timer">
+    <Filter Include="Core\Engine\Timer">
       <UniqueIdentifier>{919a5d45-14c3-4d67-b544-90a7c915d5f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Engine\Core">
+    <Filter Include="Core\Engine\Core">
       <UniqueIdentifier>{20d8af1a-ea77-4e37-8a27-e83c030df26d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Engine\Systems">
+    <Filter Include="Core\Engine\Systems">
       <UniqueIdentifier>{6a0fa2f0-a099-46f8-a9bf-4d468f151187}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Engine\Event">
-      <UniqueIdentifier>{e22c3e17-a2da-4d77-8082-8406d9bba498}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Engine\Systems\Render">
+    <Filter Include="Core\Engine\Systems\Render">
       <UniqueIdentifier>{e28ecb90-fcfc-463f-aa19-8559dd065b89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Engine\Systems\Logic">
+    <Filter Include="Core\Engine\Systems\Logic">
       <UniqueIdentifier>{caed1508-cea6-4f61-bc96-e5f2bef99b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine\Event">
+      <UniqueIdentifier>{e22c3e17-a2da-4d77-8082-8406d9bba498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\EntityInspector">
+      <UniqueIdentifier>{52f01901-89fb-41cf-ad3d-9e1a4a097beb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,16 +87,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL.h">
-      <Filter>Main\OpenGL</Filter>
+      <Filter>Core\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MeshGenerator.h">
-      <Filter>Main\Mesh</Filter>
+      <Filter>Core\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Main\Mesh</Filter>
+      <Filter>Core\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>ResorsceManager</Filter>
@@ -105,36 +111,45 @@
       <Filter>ResorsceManager\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Main\Engine\Timer</Filter>
+      <Filter>Core\Engine\Timer</Filter>
     </ClInclude>
     <ClInclude Include="SparseSet.h">
-      <Filter>Main\Engine\Core</Filter>
+      <Filter>Core\Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Registry.h">
-      <Filter>Main\Engine\Core</Filter>
+      <Filter>Core\Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="ISystem.h">
-      <Filter>Main\Engine\Systems</Filter>
+      <Filter>Core\Engine\Systems</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Main\Engine</Filter>
+      <Filter>Core\Engine</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
-      <Filter>Main\Engine\Core</Filter>
+      <Filter>Core\Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="EventDispatcher.h">
-      <Filter>Main\Engine\Event</Filter>
+      <Filter>Core\Engine\Event</Filter>
     </ClInclude>
     <ClInclude Include="BasicRenderSystem.h">
-      <Filter>Main\Engine\Systems\Render</Filter>
+      <Filter>Core\Engine\Systems\Render</Filter>
     </ClInclude>
     <ClInclude Include="Components.h">
-      <Filter>Main\Engine</Filter>
+      <Filter>Core\Engine</Filter>
     </ClInclude>
     <ClInclude Include="CameraControlSystem.h">
-      <Filter>Main\Engine\Systems\Logic</Filter>
+      <Filter>Core\Engine\Systems\Logic</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteRenderSystem.h" />
+    <ClInclude Include="TextRenderSystem.h">
+      <Filter>Core\Engine\Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntityTreePane.h">
+      <Filter>GUI\EntityInspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Core\Engine\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntityPropertyPane.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEngine.cpp">
@@ -153,13 +168,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OpenGL.cpp">
-      <Filter>Main\OpenGL</Filter>
+      <Filter>Core\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="MeshGenerator.cpp">
-      <Filter>Main\Mesh</Filter>
+      <Filter>Core\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Main\Mesh</Filter>
+      <Filter>Core\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>ResorsceManager</Filter>
@@ -174,15 +189,21 @@
       <Filter>ResorsceManager\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Main\Engine\Timer</Filter>
+      <Filter>Core\Engine\Timer</Filter>
     </ClCompile>
     <ClCompile Include="BasicRenderSystem.cpp">
-      <Filter>Main\Engine\Systems\Render</Filter>
+      <Filter>Core\Engine\Systems\Render</Filter>
     </ClCompile>
     <ClCompile Include="CameraControlSystem.cpp">
-      <Filter>Main\Engine\Systems\Logic</Filter>
+      <Filter>Core\Engine\Systems\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteRenderSystem.cpp" />
+    <ClCompile Include="TextRenderSystem.cpp">
+      <Filter>Core\Engine\Systems\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntityTreePane.cpp">
+      <Filter>GUI\EntityInspector</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntityPropertyPane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My3DEngine.rc">
@@ -194,16 +215,16 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Shaders\spriteTest.frag">
-      <Filter>Main\OpenGL\Shaders</Filter>
+      <Filter>Core\OpenGL\Shaders</Filter>
     </None>
     <None Include="Shaders\spriteTest.vert">
-      <Filter>Main\OpenGL\Shaders</Filter>
+      <Filter>Core\OpenGL\Shaders</Filter>
     </None>
     <None Include="Shaders\basic.vert">
-      <Filter>Main\OpenGL\Shaders</Filter>
+      <Filter>Core\OpenGL\Shaders</Filter>
     </None>
     <None Include="Shaders\basic.frag">
-      <Filter>Main\OpenGL\Shaders</Filter>
+      <Filter>Core\OpenGL\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

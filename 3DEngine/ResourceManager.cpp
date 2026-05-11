@@ -168,29 +168,41 @@ namespace Engine
         auto pTexture = loadTexture(textureName, texturePath);
         if (pTexture)
         {
-            const unsigned int textureWidth = pTexture->width(); 
-            const unsigned int textureHeight = pTexture->height(); 
+            const int textureWidth = pTexture->width();
+            const int textureHeight = pTexture->height();
 
-            unsigned int currentTextureOffsetX = 0;
-            unsigned int currentTextureOffsetY = textureHeight;
-
-            
+            int currentTextureOffsetX = 0;
+            int currentTextureOffsetY = textureHeight;
 
             for (const auto& currentSubTextureName : subTextures)
             {
-                glm::vec2 leftBottomUV((float)currentTextureOffsetX / textureWidth, (float)(currentTextureOffsetY - subTextureHeight) / textureHeight);
-                glm::vec2 rightTopUV((float)(currentTextureOffsetX + subTextureWidth) / textureWidth, (float)(currentTextureOffsetY) / textureHeight);
+                // Защита: если мы спустились ниже картинки, прерываем цикл
+                if (currentTextureOffsetY - subTextureHeight < 0) {
+                    // Можно добавить лог: "Warning: not enough space in atlas for all subtextures!"
+                    break;
+                }
+
+                glm::vec2 leftBottomUV(
+                    (float)currentTextureOffsetX / textureWidth,
+                    (float)(currentTextureOffsetY - subTextureHeight) / textureHeight
+                );
+
+                glm::vec2 rightTopUV(
+                    (float)(currentTextureOffsetX + subTextureWidth) / textureWidth,
+                    (float)currentTextureOffsetY / textureHeight
+                );
 
                 pTexture->addSubTexture(currentSubTextureName, leftBottomUV, rightTopUV);
 
                 currentTextureOffsetX += subTextureWidth;
-                if (currentTextureOffsetX >= textureWidth)
+
+                // Если следующий спрайт уже не влезет в строку, переносим "каретку"
+                if (currentTextureOffsetX + subTextureWidth > textureWidth)
                 {
                     currentTextureOffsetX = 0;
                     currentTextureOffsetY -= subTextureHeight;
                 }
             }
-
         }
         return pTexture;
     }

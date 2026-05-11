@@ -204,9 +204,12 @@
     <ClInclude Include="3DEngineView.h" />
     <ClInclude Include="BasicRenderSystem.h" />
     <ClInclude Include="CameraControlSystem.h" />
+    <ClInclude Include="CEntityPropertyPane.h" />
+    <ClInclude Include="CEntityTreePane.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EventDispatcher.h" />
+    <ClInclude Include="Events.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ISystem.h" />
@@ -221,7 +224,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SparseSet.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteRenderSystem.h" />
+    <ClInclude Include="TextRenderSystem.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture2D.h" />
@@ -233,6 +236,8 @@
     <ClCompile Include="3DEngineView.cpp" />
     <ClCompile Include="BasicRenderSystem.cpp" />
     <ClCompile Include="CameraControlSystem.cpp" />
+    <ClCompile Include="CEntityPropertyPane.cpp" />
+    <ClCompile Include="CEntityTreePane.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshGenerator.cpp" />
@@ -246,7 +251,7 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteRenderSystem.cpp" />
+    <ClCompile Include="TextRenderSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>

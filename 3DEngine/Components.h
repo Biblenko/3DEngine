@@ -27,14 +27,15 @@ namespace Engine
 
 
         mutable glm::mat4 m_cachedMatrix;
+        mutable glm::mat3 m_cachedNormalMatrix;
         mutable bool m_isDirty;
 
         TransformComponent()
-            : m_position(0.0f), m_rotation(0.0f), m_scale(1.0f), m_cachedMatrix(1.0f), m_isDirty(true) {
+            : m_position(0.0f), m_rotation(0.0f), m_scale(1.0f), m_cachedMatrix(1.0f), m_cachedNormalMatrix(1.0f), m_isDirty(true) {
         }
 
         TransformComponent(float x, float y, float z)
-            : m_position(x, y, z), m_rotation(0.0f), m_scale(1.0f), m_cachedMatrix(1.0f), m_isDirty(true) {
+            : m_position(x, y, z), m_rotation(0.0f), m_scale(1.0f), m_cachedMatrix(1.0f), m_cachedNormalMatrix(1.0f), m_isDirty(true) {
         }
 
 
@@ -54,20 +55,35 @@ namespace Engine
         }
 
 
+    public:
         const glm::mat4& GetModelMatrix() const {
             if (m_isDirty) {
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, m_position);
-                model = glm::rotate(model, glm::radians(m_rotation.x), glm::vec3(1, 0, 0));
-                model = glm::rotate(model, glm::radians(m_rotation.y), glm::vec3(0, 1, 0));
-                model = glm::rotate(model, glm::radians(m_rotation.z), glm::vec3(0, 0, 1));
-                model = glm::scale(model, m_scale);
-
-                m_cachedMatrix = model;
-                m_isDirty = false;
+                UpdateMatrices();
             }
-
             return m_cachedMatrix;
+        }
+
+        const glm::mat3& GetNormalMatrix() const {
+            if (m_isDirty) {
+                UpdateMatrices();
+            }
+            return m_cachedNormalMatrix;
+        }
+
+        void UpdateMatrices() const {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, m_position);
+            model = glm::rotate(model, glm::radians(m_rotation.x), glm::vec3(1, 0, 0));
+            model = glm::rotate(model, glm::radians(m_rotation.y), glm::vec3(0, 1, 0));
+            model = glm::rotate(model, glm::radians(m_rotation.z), glm::vec3(0, 0, 1));
+            model = glm::scale(model, m_scale);
+
+            m_cachedMatrix = model;
+
+            // Нормал-матрица: транспонированная обратная от 3x3 части модельной матрицы
+            m_cachedNormalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+
+            m_isDirty = false;
         }
 
         glm::vec3 GetForward() const {
@@ -104,6 +120,7 @@ namespace Engine
             UpdateProjection();
         }
 
+
         void SetAspect(float width, float height) {
             if (height <= 0) height = 1;
             m_aspect = width / height;
@@ -115,6 +132,8 @@ namespace Engine
         }
     };
 
+    struct ActiveCamera {};
+
     struct MeshComponent
     {
         std::shared_ptr<Mesh> m_Mesh;
@@ -124,7 +143,7 @@ namespace Engine
             m_Mesh = mesh;
         }
 
-        void Render()
+        void Render() const
         {
             if (m_Mesh) {
                 m_Mesh->render();
@@ -141,7 +160,7 @@ namespace Engine
             m_sprite = _sprite;
         }
 
-        void Render()
+        void Render() const
         {
             if (m_sprite) {
                 m_sprite->render();
@@ -218,6 +237,28 @@ namespace Engine
 
         PointLightComponent(glm::vec3 c = glm::vec3(1.0f), float i = 1.0f)
             : m_color(c), m_intensity(i) {
+        }
+    };
+
+    struct TextComponent {
+        std::string text;
+        std::shared_ptr<Texture2D> fontAtlas;
+        std::shared_ptr<Mesh> textMesh;
+        glm::vec3 color = glm::vec3(1.0f); // Цвет текста
+
+        // Конструктор сразу генерирует меш
+        TextComponent(const std::string& t, std::shared_ptr<Texture2D> atlas)
+            : text(t), fontAtlas(atlas)
+        {
+            textMesh = MeshGenerator::Text(fontAtlas, text, -0.25f);
+        }
+
+        // Если текст поменялся (например, счетчик FPS), нужно перегенерировать меш
+        void SetText(const std::string& newText) {
+            if (text != newText) {
+                text = newText;
+                textMesh = MeshGenerator::Text(fontAtlas, text, -0.25f);
+            }
         }
     };
 }

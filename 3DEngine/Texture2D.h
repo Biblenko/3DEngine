@@ -30,7 +30,7 @@ namespace Engine
 
 		Texture2D(	const GLuint width, const GLuint height, 
 					const unsigned char* data, const unsigned int chanels = 4, 
-					const GLuint filter = GL_LINEAR, const GLuint wrapMode = GL_CLAMP_TO_EDGE);
+					const GLuint filter = GL_NEAREST, const GLuint wrapMode = GL_CLAMP_TO_EDGE);
 		
 		Texture2D() = delete;
 		Texture2D(const Texture2D&) = delete;

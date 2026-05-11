@@ -27,6 +27,12 @@ namespace Engine
         void setMatrix4(const std::string& name, const glm::mat4& matrix);
         void setMatrix3(const std::string& name, const glm::mat3& matrix);
 
+        void setInt(GLint location, GLint value);
+        void setFloat(GLint location, GLfloat value);
+        void setVec3(GLint location, const glm::vec3& value);
+        void setMatrix4(GLint location, const glm::mat4& matrix);
+        void setMatrix3(GLint location, const glm::mat3& matrix);
+
         GLint getUniformLocation(const std::string& name);
 
     private:

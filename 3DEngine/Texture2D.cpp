@@ -26,6 +26,7 @@ Engine::Texture2D::Texture2D(const GLuint width, const GLuint height,
 
 	glGenTextures(1, &m_ID);
 	glBindTexture(GL_TEXTURE_2D, m_ID);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, m_mode, m_width, m_height, 0, m_mode, GL_UNSIGNED_BYTE, data);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
@@ -47,6 +48,7 @@ Engine::Texture2D& Engine::Texture2D::operator=(Texture2D&& texture2d)
 	m_mode = texture2d.m_mode;
 	m_width = texture2d.m_width;
 	m_height = texture2d.m_height;
+	m_subTextures = std::move(texture2d.m_subTextures);
 
 	return *this;
 }
@@ -58,6 +60,7 @@ Engine::Texture2D::Texture2D(Texture2D&& texture2d)
 	m_mode = texture2d.m_mode;
 	m_width = texture2d.m_width;
 	m_height = texture2d.m_height;
+	m_subTextures = std::move(texture2d.m_subTextures);
 }
 
 Engine::Texture2D::~Texture2D()
@@ -84,4 +87,5 @@ const Engine::Texture2D::SubTexture2D& Engine::Texture2D::getSubTexture(const st
 void Engine::Texture2D::bind() const
 {
 	glBindTexture(GL_TEXTURE_2D, m_ID);
+
 }

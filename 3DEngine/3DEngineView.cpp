@@ -24,6 +24,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+#include "MainFrm.h"
 
 
 // CMy3DEngineView
@@ -146,6 +147,22 @@ int CMy3DEngineView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CMy3DEngineView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
+
+	CMainFrame* pFrame = (CMainFrame*)GetParentFrame();
+	if (pFrame != nullptr)
+	{
+		CEntityTreePane* pEntityTreePane = pFrame->m_entityTreePane;
+		if (pEntityTreePane != nullptr)
+		{
+			pEntityTreePane->SetECS(&m_ECS);
+		}
+
+		CEntityPropertyPane* pEntityPropertyPane = pFrame->m_entityPropertyPane;
+		if (pEntityPropertyPane != nullptr)
+		{
+			pEntityPropertyPane->SetECS(&m_ECS);
+		}
+	}
 
 	//UINT_PTR myTimer = SetTimer(1, 1, NULL);
 }

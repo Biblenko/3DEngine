@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "CEntityTreePane.h"
+#include "CEntityPropertyPane.h"
+
 class CMainFrame : public CFrameWndEx
 {
 	
@@ -13,7 +16,8 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	CEntityTreePane* m_entityTreePane;
+	CEntityPropertyPane* m_entityPropertyPane;
 // Operations
 public:
 
@@ -37,6 +41,9 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnViewEntityTree();
+	afx_msg void OnViewEntityProperties();
 };
 
 

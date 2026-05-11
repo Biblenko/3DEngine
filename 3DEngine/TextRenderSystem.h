@@ -10,7 +10,7 @@ namespace Engine
 
 	class ShaderProgram;
 
-	class SpriteRenderSystem : public ISystem
+	class TextRenderSystem : public ISystem
 	{
 	public:
 		std::shared_ptr<ShaderProgram> m_shader;
@@ -19,7 +19,7 @@ namespace Engine
 		glm::mat4 m_projection;
 
 
-		SpriteRenderSystem();
+		TextRenderSystem();
 
 		void Init(ECS& e) override;
 

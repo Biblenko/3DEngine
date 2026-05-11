@@ -91,4 +91,59 @@ namespace Engine
 
         return std::make_shared<Mesh>(vertexCoordinate, indices);
     }
+
+
+    std::shared_ptr<Mesh> MeshGenerator::Text(const std::shared_ptr<Texture2D> pTexture, const std::string& text, float spacing = 0.0f)
+    {
+        std::vector<GLfloat> vertexCoordinates;
+        std::vector<GLuint> indices;
+
+        //
+        // Rederve for text
+        //
+        vertexCoordinates.reserve(text.size() * 32);
+        indices.reserve(text.size() * 6);
+
+        float cursorX = 0.0f;
+        const float z = 0.0f;
+
+        for (size_t i = 0; i < text.size(); ++i)
+        {
+            char c = text[i];
+
+            std::string charName(1, c);
+
+            //if (c == ' ') {
+            //    cursorX += 0.5f; // Space
+            //    continue;
+            //}
+
+            const auto& subTexture = pTexture->getSubTexture(charName);
+
+            float charWidth = 0.5f;
+            float charHeight = 0.5f;
+
+            float left = cursorX;
+            float right = cursorX + charWidth;
+            float bottom = -charHeight / 2.0f;
+            float top = charHeight / 2.0f;
+
+            vertexCoordinates.insert(vertexCoordinates.end(), {
+                left,  bottom, z,   0.0f, 0.0f, 1.0f,   subTexture.leftBottomUV.x, subTexture.leftBottomUV.y,
+                right, bottom, z,   0.0f, 0.0f, 1.0f,   subTexture.rightTopUV.x,   subTexture.leftBottomUV.y,
+                right, top,    z,   0.0f, 0.0f, 1.0f,   subTexture.rightTopUV.x,   subTexture.rightTopUV.y,
+                left,  top,    z,   0.0f, 0.0f, 1.0f,   subTexture.leftBottomUV.x, subTexture.rightTopUV.y
+                });
+
+            GLuint offset = static_cast<GLuint>(i * 4);
+            indices.insert(indices.end(), {
+                offset + 0, offset + 1, offset + 2,
+                offset + 2, offset + 3, offset + 0
+                });
+
+            cursorX += charWidth + spacing;
+        }
+
+        return std::make_shared<Mesh>(vertexCoordinates, indices);
+    }
 }
