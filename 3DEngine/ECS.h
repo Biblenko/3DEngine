@@ -15,6 +15,7 @@
 #include "TextRenderSystem.h"
 
 #include "CameraControlSystem.h"
+#include "DataBaseCommunicateSystem.h"
 
 
 
@@ -36,6 +37,7 @@ namespace Engine {
 			AddSystem<TextRenderSystem>();
 
 			AddSystem<CameraControlSystem>();
+			AddSystem<DataBaseCommunicateSystem>();
 		}
 
 		void CreateScene()
@@ -43,22 +45,8 @@ namespace Engine {
 			auto pointLight = m_registry.CreateEntity();
 
 			m_registry.EmplaceComponent<NameComponent>(pointLight, "PointLight");
-			m_registry.EmplaceComponent<TransformComponent>(pointLight, 10.0f, 10.0f, 10.0f);
+			m_registry.EmplaceComponent<TransformComponent>(pointLight, 32.0f, 32.0f, 32.0f);
 			m_registry.EmplaceComponent<PointLightComponent>(pointLight);
-
-
-
-			for (size_t i = 0; i < 64 * 64; i++)
-			{
-				auto floor = m_registry.CreateEntity();
-
-				//m_registry.EmplaceComponent<NameComponent>(floor, "Floor");
-				m_registry.EmplaceComponent<TransformComponent>(floor, float(i % 64), 0.0f, float(i / 64));
-				m_registry.EmplaceComponent<MeshComponent>(floor, m_ResourceManager->getMesh("Cube"));
-				m_registry.EmplaceComponent<MaterialComponent>(floor, MaterialComponent::RedPlastic());
-			}
-
-			
 
 			auto camera = m_registry.CreateEntity();
 
@@ -67,30 +55,80 @@ namespace Engine {
 			m_registry.EmplaceComponent<TransformComponent>(camera, 1.f, 1.f, 1.f);
 			m_registry.EmplaceComponent<MovementComponent>(camera);
 
-			auto camera2 = m_registry.CreateEntity();
+			/*auto floor = m_registry.CreateEntity();
 
-			m_registry.EmplaceComponent<NameComponent>(camera2, "Camera2");
-			m_registry.EmplaceComponent<CameraComponent>(camera2);
-			m_registry.EmplaceComponent<TransformComponent>(camera2, 10.f, 1.f, 10.f);
-			m_registry.EmplaceComponent<MovementComponent>(camera2);
+			m_registry.EmplaceComponent<NameComponent>(floor, "Floor");
+			m_registry.EmplaceComponent<TransformComponent>(floor, 0.0f, 0.0f, 0.0f);
+			m_registry.EmplaceComponent<MeshComponent>(floor, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(floor, glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "Concrete");*/
 
+
+
+			auto floor = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(floor, "Floor");
+			m_registry.EmplaceComponent<TransformComponent>(floor, 0.0f, 0.0f, 0.0f).SetScale(glm::vec3(6.f, 1.f, 8.f));
+			m_registry.EmplaceComponent<MeshComponent>(floor, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(floor, glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "Concrete");
+
+			auto wall = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(wall, "Wall");
+			m_registry.EmplaceComponent<TransformComponent>(wall, 0.0f, 3.5f, -3.5f).SetScale(glm::vec3(6.f, 6.f, 1.f));
+			m_registry.EmplaceComponent<MeshComponent>(wall, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(wall, glm::vec3(1.0f, 0.4f, 0.3f), glm::vec3(1.0f, 0.4f, 0.5f), glm::vec3(1.0f, 0.4f, 0.5f), 1.f, "Brick");
+			m_registry.EmplaceComponent<DataBaseConnectComponent>(wall);
+
+			auto obj1 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(obj1, "Obj1");
+			m_registry.EmplaceComponent<TransformComponent>(obj1, 1.5f, 1.f, 2.5f);
+			m_registry.EmplaceComponent<MeshComponent>(obj1, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(obj1, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
+
+			auto obj2 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(obj2, "Obj2");
+			m_registry.EmplaceComponent<TransformComponent>(obj2, 1.5f, 1.f, 1.0f);
+			m_registry.EmplaceComponent<MeshComponent>(obj2, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(obj2, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
+
+			auto obj3 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(obj3, "Obj3");
+			m_registry.EmplaceComponent<TransformComponent>(obj3, 1.5f, 1.f, -.5f);
+			m_registry.EmplaceComponent<MeshComponent>(obj3, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(obj3, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
+
+			auto obj4 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(obj4, "Obj4");
+			m_registry.EmplaceComponent<TransformComponent>(obj4, -1.5f, 1.f, 2.5f);
+			m_registry.EmplaceComponent<MeshComponent>(obj4, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(obj4, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
+
+			auto obj5 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(obj5, "Obj5");
+			m_registry.EmplaceComponent<TransformComponent>(obj5, -1.5f, 1.f, 1.0f);
+			m_registry.EmplaceComponent<MeshComponent>(obj5, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(obj5, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
+			m_registry.EmplaceComponent<DataBaseConnectComponent>(obj5);
+
+			auto obj6 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(obj6, "Obj6");
+			m_registry.EmplaceComponent<TransformComponent>(obj6, -1.5f, 1.f, -.5f);
+			m_registry.EmplaceComponent<MeshComponent>(obj6, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(obj6, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
+
+			
 			auto text = m_registry.CreateEntity();
 
 			m_registry.EmplaceComponent<NameComponent>(text, "Text");
-			m_registry.EmplaceComponent<TransformComponent>(text, 0.0f, 1.0f, 0.0f);
-
-			auto& spriteTransform = *m_registry.GetComponent<TransformComponent>(text);
-			spriteTransform.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-			spriteTransform.SetScale(glm::vec3(.2f, .2f, .2f));
-
-			/*m_registry.EmplaceComponent<MeshComponent>(text, m_ResourceManager->getMesh("Sprite"));
-			m_registry.EmplaceComponent<MaterialComponent>(text, 
-				glm::vec3(1.f, 1.f, 1.f),
-				glm::vec3(0.75164f, 0.60648f, 0.22648f),  
-				glm::vec3(0.62828f, 0.5558f, 0.366065f),
-				120.0f, m_ResourceManager->getTexture("Text"));*/
-
-			m_registry.EmplaceComponent<TextComponent>(text, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", m_ResourceManager->getTexture("Text"));
+			m_registry.EmplaceComponent<TransformComponent>(text, -1.5f, 3.f, -2.9f).SetScale(glm::vec3(2.f));
+			m_registry.EmplaceComponent<TextComponent>(text, "Factory", m_ResourceManager->getTexture("Text"));
+			
 		}
 
 		void Init() 
@@ -105,8 +143,11 @@ namespace Engine {
 
 			//Textures
 			m_ResourceManager->loadTexture("Cobble", "Textures/cobble.png");
+			m_ResourceManager->loadTexture("Concrete", "Textures/concrete.png");
 			m_ResourceManager->loadTexture("Brick", "Textures/brick.png");
 			m_ResourceManager->loadTexture("Glass", "Textures/glass.png");
+			m_ResourceManager->loadTexture("CorrodedMetal", "Textures/corrodedmetal.png");
+			m_ResourceManager->loadTexture("DiamondPlate", "Textures/diamondplate.png");
 
 			//Text
 			std::vector<std::string> subTextures = {

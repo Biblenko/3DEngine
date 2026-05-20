@@ -69,8 +69,13 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
-	// TODO: Modify the Window class or styles here by modifying
-	//  the CREATESTRUCT cs
+
+	cs.style = WS_OVERLAPPED | WS_CAPTION   /*| FWS_ADDTOTITLE*/
+		| WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+		| WS_SYSMENU | WS_CLIPCHILDREN;
+
+
+	cs.dwExStyle |= WS_EX_ACCEPTFILES;
 
 	return TRUE;
 }

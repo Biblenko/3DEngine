@@ -60,6 +60,9 @@
     <Filter Include="GUI\EntityInspector">
       <UniqueIdentifier>{52f01901-89fb-41cf-ad3d-9e1a4a097beb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data Base">
+      <UniqueIdentifier>{00a05290-6fff-4375-ad7f-54060b61d162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DEngine.h">
@@ -149,7 +152,15 @@
     <ClInclude Include="Events.h">
       <Filter>Core\Engine\Event</Filter>
     </ClInclude>
-    <ClInclude Include="CEntityPropertyPane.h" />
+    <ClInclude Include="DataBaseConnection.h">
+      <Filter>Data Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBaseCommunicateSystem.h">
+      <Filter>Core\Engine\Systems\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntityPropertyPane.h">
+      <Filter>GUI\EntityInspector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEngine.cpp">
@@ -203,7 +214,15 @@
     <ClCompile Include="CEntityTreePane.cpp">
       <Filter>GUI\EntityInspector</Filter>
     </ClCompile>
-    <ClCompile Include="CEntityPropertyPane.cpp" />
+    <ClCompile Include="DataBaseConnection.cpp">
+      <Filter>Data Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBaseCommunicateSystem.cpp">
+      <Filter>Core\Engine\Systems\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntityPropertyPane.cpp">
+      <Filter>GUI\EntityInspector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My3DEngine.rc">

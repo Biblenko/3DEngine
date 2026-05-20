@@ -11,4 +11,10 @@ namespace Engine
 	{
 		size_t entity;
 	};
+
+	struct EventEntityAlarm
+	{
+		size_t entity;
+		bool alarm;
+	};
 }

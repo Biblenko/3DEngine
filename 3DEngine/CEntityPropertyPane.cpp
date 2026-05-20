@@ -24,6 +24,21 @@ namespace {
 
         Light_Color = 401, Light_Intensity = 402
     };
+
+    COLORREF Vec3ToRGB(const glm::vec3& v) {
+        int r = std::clamp((int)(v.x * 255.0f), 0, 255);
+        int g = std::clamp((int)(v.y * 255.0f), 0, 255);
+        int b = std::clamp((int)(v.z * 255.0f), 0, 255);
+        return RGB(r, g, b);
+    }
+
+    glm::vec3 RGBToVec3(COLORREF color) {
+        return glm::vec3(
+            GetRValue(color) / 255.0f,
+            GetGValue(color) / 255.0f,
+            GetBValue(color) / 255.0f
+        );
+    }
 }
 
 
@@ -53,7 +68,7 @@ void CEntityPropertyPane::PopulateProperties(Engine::EntityID entity)
     if (!p_esc) return;
 
     // NAME
-    const auto& nameComponent = p_esc->m_registry.GetComponent<Engine::NameComponent>(entity);
+    auto nameComponent = p_esc->m_registry.GetComponent<Engine::NameComponent>(entity);
     if (nameComponent)
     {
         auto* pGroup = new CMFCPropertyGridProperty(_T("NameComponent"));
@@ -66,7 +81,7 @@ void CEntityPropertyPane::PopulateProperties(Engine::EntityID entity)
     }
 
     // TRANSFORM
-    const auto& transformComponent = p_esc->m_registry.GetComponent<Engine::TransformComponent>(entity);
+    auto transformComponent = p_esc->m_registry.GetComponent<Engine::TransformComponent>(entity);
     if (transformComponent)
     {
         auto* pGroup = new CMFCPropertyGridProperty(_T("TransformComponent"));
@@ -92,6 +107,31 @@ void CEntityPropertyPane::PopulateProperties(Engine::EntityID entity)
         m_wndPropGrid.AddProperty(pGroup);
     }
 
+    // MATERIAL
+    auto materialComponent = p_esc->m_registry.GetComponent<Engine::MaterialComponent>(entity);
+    if (materialComponent)
+    {
+        auto* pGroup = new CMFCPropertyGridProperty(_T("MaterialComponent"));
+
+        auto addColor = [&](const CString& name, const glm::vec3& vecColor, PropID id, const CString& desc) {
+            auto* pProp = new CMFCPropertyGridColorProperty(name, Vec3ToRGB(vecColor), nullptr, desc);
+            pProp->EnableOtherButton(_T("Other Colors..."));
+            pProp->SetData(id);
+            pGroup->AddSubItem(pProp);
+            };
+
+        addColor(_T("Ambient"), materialComponent->m_ambient, PropID::Mat_Ambient, _T("Ambient color"));
+        addColor(_T("Diffuse"), materialComponent->m_diffuse, PropID::Mat_Diffuse, _T("Diffuse color"));
+        addColor(_T("Specular"), materialComponent->m_specular, PropID::Mat_Specular, _T("Specular color"));
+
+        auto* pShininess = new CMFCPropertyGridProperty(_T("Shininess"), (_variant_t)materialComponent->m_shininess, _T("Shininess factor"));
+        pShininess->SetData(PropID::Mat_Shininess);
+        pGroup->AddSubItem(pShininess);
+
+        m_wndPropGrid.AddProperty(pGroup);
+    }
+
+
     m_wndPropGrid.AdjustLayout();
 }
 
@@ -107,21 +147,22 @@ LRESULT CEntityPropertyPane::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
     // Получаем указатели на компоненты
     auto* transform = p_esc->m_registry.GetComponent<Engine::TransformComponent>(m_selectedEntity);
     auto* nameComp = p_esc->m_registry.GetComponent<Engine::NameComponent>(m_selectedEntity);
+    auto* materialComp = p_esc->m_registry.GetComponent<Engine::MaterialComponent>(m_selectedEntity);
 
     try
     {
         switch (propertyID)
         {
-            // --- NAME ---
+            // NAME
         case PropID::Name_Value:
             if (nameComp)
             {
                 var.ChangeType(VT_BSTR);
-                nameComp->m_name = CW2A(var.bstrVal); // Конвертация из wide string в std::string
+                nameComp->m_name = CW2A(var.bstrVal);
             }
             break;
 
-            // --- POSITION ---
+            // TRANSFORM
         case PropID::Trans_PosX:
             if (transform) { var.ChangeType(VT_R4); transform->m_position.x = var.fltVal; transform->m_isDirty = true; }
             break;
@@ -132,7 +173,6 @@ LRESULT CEntityPropertyPane::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
             if (transform) { var.ChangeType(VT_R4); transform->m_position.z = var.fltVal; transform->m_isDirty = true; }
             break;
 
-            // --- ROTATION ---
         case PropID::Trans_RotX:
             if (transform) { var.ChangeType(VT_R4); transform->m_rotation.x = var.fltVal; transform->m_isDirty = true; }
             break;
@@ -143,7 +183,6 @@ LRESULT CEntityPropertyPane::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
             if (transform) { var.ChangeType(VT_R4); transform->m_rotation.z = var.fltVal; transform->m_isDirty = true; }
             break;
 
-            // --- SCALE ---
         case PropID::Trans_ScaleX:
             if (transform) { var.ChangeType(VT_R4); transform->m_scale.x = var.fltVal; transform->m_isDirty = true; }
             break;
@@ -153,7 +192,52 @@ LRESULT CEntityPropertyPane::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
         case PropID::Trans_ScaleZ:
             if (transform) { var.ChangeType(VT_R4); transform->m_scale.z = var.fltVal; transform->m_isDirty = true; }
             break;
+
+            // MATERIAL
+        case PropID::Mat_Ambient:
+            if (materialComp)
+            {
+                if (auto* pColorProp = dynamic_cast<CMFCPropertyGridColorProperty*>(pProp))
+                {
+                    COLORREF c = pColorProp->GetColor();
+                    materialComp->m_ambient = glm::vec3(GetRValue(c) / 255.0f, GetGValue(c) / 255.0f, GetBValue(c) / 255.0f);
+                }
+            }
+            break;
+
+        case PropID::Mat_Diffuse:
+            if (materialComp)
+            {
+                if (auto* pColorProp = dynamic_cast<CMFCPropertyGridColorProperty*>(pProp))
+                {
+                    COLORREF c = pColorProp->GetColor();
+                    materialComp->m_diffuse = glm::vec3(GetRValue(c) / 255.0f, GetGValue(c) / 255.0f, GetBValue(c) / 255.0f);
+                }
+            }
+            break;
+
+        case PropID::Mat_Specular:
+            if (materialComp)
+            {
+                if (auto* pColorProp = dynamic_cast<CMFCPropertyGridColorProperty*>(pProp))
+                {
+                    COLORREF c = pColorProp->GetColor();
+                    materialComp->m_specular = glm::vec3(GetRValue(c) / 255.0f, GetGValue(c) / 255.0f, GetBValue(c) / 255.0f);
+                }
+            }
+            break;
+
+        case PropID::Mat_Shininess:
+            if (materialComp)
+            {
+                var.ChangeType(VT_R4);
+                materialComp->m_shininess = var.fltVal;
+            }
+            break;
         }
+
+       
+
     }
     catch (COleException* e)
     {

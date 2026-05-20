@@ -4,19 +4,18 @@
 namespace Engine {
 
     OpenGL::OpenGL() {
-        // Инициализируем PIXELFORMATDESCRIPTOR в конструкторе
         ZeroMemory(&m_pfd, sizeof(PIXELFORMATDESCRIPTOR));
 
         m_pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
         m_pfd.nVersion = 1;
-        m_pfd.dwFlags = PFD_DRAW_TO_WINDOW |    // Рисуем в окне
-            PFD_SUPPORT_OPENGL |                // Поддерживаем OpenGL
-            PFD_DOUBLEBUFFER;                   // Двойная буферизация
-        m_pfd.iPixelType = PFD_TYPE_RGBA;       // RGBA формат
-        m_pfd.cColorBits = 32;                  // 32 бита на цвет (8-8-8-8)
-        m_pfd.cAlphaBits = 8;                   // Alpha канал
-        m_pfd.cDepthBits = 24;                  // Z-буфер 24 бита
-        m_pfd.cStencilBits = 8;                 // Stencil буфер 8 бит
+        m_pfd.dwFlags = PFD_DRAW_TO_WINDOW |
+                        PFD_SUPPORT_OPENGL |
+                        PFD_DOUBLEBUFFER;
+        m_pfd.iPixelType = PFD_TYPE_RGBA;       
+        m_pfd.cColorBits = 32;                  
+        m_pfd.cAlphaBits = 8;                   
+        m_pfd.cDepthBits = 24;                  
+        m_pfd.cStencilBits = 8;                 
         m_pfd.iLayerType = PFD_MAIN_PLANE;
     }
 
@@ -25,7 +24,7 @@ namespace Engine {
     }
 
     bool OpenGL::InitOpenGL(CWnd* pWnd) {
-        // ✅ Проверяем входные параметры
+
         if (!pWnd || !pWnd->GetSafeHwnd()) {
             TRACE0("Error: Invalid window pointer\n");
             return false;
@@ -33,14 +32,12 @@ namespace Engine {
 
         m_pWnd = pWnd;
 
-        // ✅ Устанавливаем формат пикселя
         if (!SetupPixelFormat()) {
             TRACE0("Error: Failed to setup pixel format\n");
             Cleanup();
             return false;
         }
 
-        // ✅ Получаем HDC и создаём контекст
         HDC hdc = GetContextDC();
         if (!hdc) {
             TRACE0("Error: Failed to get device context\n");
@@ -55,14 +52,12 @@ namespace Engine {
             return false;
         }
 
-        // ✅ Делаем контекст активным
         if (!wglMakeCurrent(hdc, m_hRC)) {
             TRACE0("Error: Failed to make context current\n");
             Cleanup();
             return false;
         }
 
-        // ✅ Инициализируем GLEW
         glewExperimental = GL_FALSE;
         GLenum err = glewInit();
         if (err != GLEW_OK) {
@@ -73,7 +68,7 @@ namespace Engine {
             return false;
         }
 
-        // ✅ Применяем настройки
+
         ApplySettings();
 
         return true;
@@ -87,14 +82,12 @@ namespace Engine {
         HDC hdc = GetContextDC();
         if (!hdc) return false;
 
-        // ✅ Выбираем подходящий формат пикселя
         int pixelFormat = ChoosePixelFormat(hdc, &m_pfd);
         if (pixelFormat == 0) {
             TRACE0("Error: ChoosePixelFormat failed\n");
             return false;
         }
 
-        // ✅ Устанавливаем формат пикселя
         if (!SetPixelFormat(hdc, pixelFormat, &m_pfd)) {
             TRACE0("Error: SetPixelFormat failed\n");
             return false;
@@ -108,7 +101,6 @@ namespace Engine {
             return nullptr;
         }
 
-        // ✅ Получаем HDC из окна (MFC-способ)
         return ::GetDC(m_pWnd->GetSafeHwnd());
     }
 
@@ -142,7 +134,6 @@ namespace Engine {
     }
 
     void OpenGL::SetViewport(int width, int height) {
-        // ✅ Валидируем размеры
         if (width <= 0 || height <= 0) {
             TRACE2("Warning: Invalid viewport size: %dx%d\n", width, height);
             return;
@@ -152,21 +143,20 @@ namespace Engine {
     }
 
     void OpenGL::ApplySettings() {
-        // ✅ Основные настройки OpenGL
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
         glDepthMask(GL_TRUE);
         glClearDepth(1.0f);
 
-        // ✅ Culling (удаление невидимых граней)
+
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
         glFrontFace(GL_CCW);
 
-        // ✅ Цвет очистки фона
+
         glClearColor(0.8f, 0.9f, 1.0f, 1.0f);
 
-        // ✅ Если используете освещение
+
         //glEnable(GL_LIGHTING);
         //glEnable(GL_LIGHT0);
         //glEnable(GL_COLOR_MATERIAL);

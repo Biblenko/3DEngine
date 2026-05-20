@@ -21,9 +21,9 @@ namespace Engine {
         bool IsInitialized() const { return m_hRC != nullptr; }
 
     private:
-        CWnd* m_pWnd = nullptr;           // Указатель на окно MFC
-        HGLRC m_hRC = nullptr;            // OpenGL контекст
-        PIXELFORMATDESCRIPTOR m_pfd = {}; // Формат пикселя
+        CWnd* m_pWnd = nullptr;           
+        HGLRC m_hRC = nullptr;            
+        PIXELFORMATDESCRIPTOR m_pfd = {};
 
         bool SetupPixelFormat();
         HDC GetContextDC();

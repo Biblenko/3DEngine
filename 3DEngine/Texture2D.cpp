@@ -19,6 +19,12 @@ Engine::Texture2D::Texture2D(const GLuint width, const GLuint height,
 	case 3:
 		m_mode = GL_RGB;
 		break;
+	case 2:
+		m_mode = GL_RG;
+		break;
+	case 1:
+		m_mode = GL_R;
+		break;
 	default:
 		m_mode = GL_RGBA;
 		break;

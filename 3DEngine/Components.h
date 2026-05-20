@@ -177,6 +177,7 @@ namespace Engine
 
         //GLuint m_diffuseMap = 0;
 
+        std::string m_textureName;
         std::shared_ptr<Texture2D> m_diffuseMap;
 
         MaterialComponent()
@@ -191,6 +192,18 @@ namespace Engine
         MaterialComponent(glm::vec3 a, glm::vec3 d, glm::vec3 s, float sh, std::shared_ptr<Texture2D> diffuseMapTexture)
             : m_ambient(a), m_diffuse(d), m_specular(s), m_shininess(sh) {
             m_diffuseMap = diffuseMapTexture;
+        }
+
+        MaterialComponent(glm::vec3 a, glm::vec3 d, glm::vec3 s, float sh, const std::string &_textureName)
+            : m_ambient(a), m_diffuse(d), m_specular(s), m_shininess(sh) {
+            m_textureName = _textureName;
+            m_diffuseMap = ResourceManager::Instance->getTexture(m_textureName);
+        }
+
+        void setTexture(const std::string& _textureName)
+        {
+            m_textureName = _textureName;
+            m_diffuseMap = ResourceManager::Instance->getTexture(m_textureName);
         }
 
         static MaterialComponent Gold() {
@@ -235,7 +248,7 @@ namespace Engine
         glm::vec3 m_color;
         float m_intensity;
 
-        PointLightComponent(glm::vec3 c = glm::vec3(1.0f), float i = 1.0f)
+        PointLightComponent(glm::vec3 c = glm::vec3(1.0f), float i = 0.5f)
             : m_color(c), m_intensity(i) {
         }
     };
@@ -260,5 +273,9 @@ namespace Engine
                 textMesh = MeshGenerator::Text(fontAtlas, text, -0.25f);
             }
         }
+    };
+
+    struct DataBaseConnectComponent {
+
     };
 }
