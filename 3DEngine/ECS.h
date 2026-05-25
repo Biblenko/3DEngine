@@ -70,6 +70,7 @@ namespace Engine {
 			m_registry.EmplaceComponent<TransformComponent>(floor, 0.0f, 0.0f, 0.0f).SetScale(glm::vec3(6.f, 1.f, 8.f));
 			m_registry.EmplaceComponent<MeshComponent>(floor, m_ResourceManager->getMesh("Cube"));
 			m_registry.EmplaceComponent<MaterialComponent>(floor, glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "Concrete");
+			m_registry.EmplaceComponent<DataBaseConnectComponent>(floor);
 
 			auto wall = m_registry.CreateEntity();
 
@@ -127,7 +128,7 @@ namespace Engine {
 
 			m_registry.EmplaceComponent<NameComponent>(text, "Text");
 			m_registry.EmplaceComponent<TransformComponent>(text, -1.5f, 3.f, -2.9f).SetScale(glm::vec3(2.f));
-			m_registry.EmplaceComponent<TextComponent>(text, "Factory", m_ResourceManager->getTexture("Text"));
+			m_registry.EmplaceComponent<TextComponent>(text, "Factory", m_ResourceManager->getTexture("SuperText"));
 			
 		}
 

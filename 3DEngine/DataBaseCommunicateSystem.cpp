@@ -36,10 +36,10 @@ void Engine::DataBaseCommunicateSystem::InitDataBase(ECS& e)
 
         //auto linked_entities = e.m_registry.Entities<DataBaseConnectComponent>();
 
-        e.m_registry.Each<DataBaseConnectComponent, MaterialComponent>([&sess](EntityID entityId, DataBaseConnectComponent& db, MaterialComponent& material)
+        e.m_registry.Each<DataBaseConnectComponent, NameComponent, MaterialComponent>([&sess](EntityID entityId, DataBaseConnectComponent& db, NameComponent& name, MaterialComponent& material)
             {
-                sess.sql("INSERT INTO color (entity, ambient_r, ambient_g, ambient_b) VALUES (?, ?, ?, ?)")
-                    .bind(entityId, material.m_ambient.r, material.m_ambient.g, material.m_ambient.b)
+                sess.sql("INSERT INTO color (entity, name, ambient_r, ambient_g, ambient_b) VALUES (?, ?, ?, ?, ?)")
+                    .bind(entityId, name.m_name, material.m_ambient.r, material.m_ambient.g, material.m_ambient.b)
                     .execute();
             });
 
