@@ -137,11 +137,18 @@ namespace Engine
     struct MeshComponent
     {
         std::shared_ptr<Mesh> m_Mesh;
+        //std::string m_meshName;
 
         MeshComponent(std::shared_ptr<Mesh> mesh) 
         {
             m_Mesh = mesh;
         }
+
+        /*MeshComponent(std::string &_meshName)
+        {
+            m_meshName = _meshName;
+            m_Mesh = ResourceManager::Instance->getMesh(m_meshName);
+        }*/
 
         void Render() const
         {

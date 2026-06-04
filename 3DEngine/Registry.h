@@ -158,10 +158,6 @@ namespace Engine
 
         // ──────────────────────────────────────────────────────────────────
         //  Multi-component iteration  Each<T1, T2, ...>(func)
-        //
-        //  func signature:
-        //    (EntityID, T1&, T2&, ...)   — with entity
-        //    (T1&, T2&, ...)             — without entity
         // ──────────────────────────────────────────────────────────────────
         template<typename T1, typename... Tn, typename Func>
         void Each(Func&& func)
@@ -181,31 +177,39 @@ namespace Engine
             }
             else
             {
-                // Multi-component: iterate smallest pool, check others
+                // Cache pointers to all secondary component pools once before the loop
                 auto otherPools = std::make_tuple(TryGetPool<Tn>()...);
 
-                // If any required pool doesn't exist — nothing to iterate
-                bool allExist = ((std::get<SparseSet<Tn>*>(otherPools) != nullptr) && ...);
+                // If any required pool is missing, there is nothing to iterate
+                bool allExist = std::apply([](auto*... pools) { return ((pools != nullptr) && ...); }, otherPools);
                 if (!allExist) return;
 
+                // Main iteration loop over the primary pool
                 for (auto [entity, comp1] : pool1)
                 {
-                    bool hasAll = (std::get<SparseSet<Tn>*>(otherPools)->Has(entity) && ...);
+                    // Fetch pointers to secondary components using a single lookup per pool
+                    auto componentPtrs = std::make_tuple(std::get<SparseSet<Tn>*>(otherPools)->Get(entity)...);
+
+                    // Validate that the entity contains all required components
+                    bool hasAll = std::apply([](auto*... ptrs) { return ((ptrs != nullptr) && ...); }, componentPtrs);
                     if (!hasAll) continue;
 
+                    // Invoke user callback with or without EntityID based on its signature
                     if constexpr (std::is_invocable_v<Func, EntityID, T1&, Tn&...>)
                     {
-                        func(entity, comp1,
-                            *std::get<SparseSet<Tn>*>(otherPools)->Get(entity)...);
+                        std::apply([&](auto*... ptrs) {
+                            func(entity, comp1, *ptrs...);
+                            }, componentPtrs);
                     }
                     else
                     {
-                        func(comp1,
-                            *std::get<SparseSet<Tn>*>(otherPools)->Get(entity)...);
+                        std::apply([&](auto*... ptrs) {
+                            func(comp1, *ptrs...);
+                            }, componentPtrs);
                     }
                 }
             }
         }
     };
 
-} // namespace Game
+}

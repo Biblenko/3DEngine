@@ -17,6 +17,8 @@
 #include "CameraControlSystem.h"
 #include "DataBaseCommunicateSystem.h"
 
+#include <random>
+
 
 
 namespace Engine {
@@ -55,6 +57,16 @@ namespace Engine {
 			m_registry.EmplaceComponent<TransformComponent>(camera, 1.f, 1.f, 1.f);
 			m_registry.EmplaceComponent<MovementComponent>(camera);
 
+			auto camera2 = m_registry.CreateEntity();
+
+			m_registry.EmplaceComponent<NameComponent>(camera2, "Camera2");
+			m_registry.EmplaceComponent<CameraComponent>(camera2);
+			m_registry.EmplaceComponent<TransformComponent>(camera2, 12.f, 12.f, 12.f);
+			m_registry.EmplaceComponent<MovementComponent>(camera2);
+			m_registry.EmplaceComponent<MeshComponent>(camera2, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MaterialComponent>(camera2, glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "Concrete");
+
+
 			/*auto floor = m_registry.CreateEntity();
 
 			m_registry.EmplaceComponent<NameComponent>(floor, "Floor");
@@ -80,18 +92,79 @@ namespace Engine {
 			m_registry.EmplaceComponent<MaterialComponent>(wall, glm::vec3(1.0f, 0.4f, 0.3f), glm::vec3(1.0f, 0.4f, 0.5f), glm::vec3(1.0f, 0.4f, 0.5f), 1.f, "Brick");
 			m_registry.EmplaceComponent<DataBaseConnectComponent>(wall);
 
+			std::vector<std::string> availableMeshes = {
+	"Cube", "Tetrahedron", "Octahedron", "Icosahedron", "Dodecahedron", "Sphere"
+			};
+
+			std::vector<std::string> availableTextures = {
+				"NoTexture", "Cobble", "Concrete", "Brick", "Glass", "CorrodedMetal", "DiamondPlate"
+			};
+
+			std::random_device rd;
+			std::mt19937 gen(rd());
+
+			std::uniform_int_distribution<> meshDist(0, availableMeshes.size() - 1);
+			std::uniform_int_distribution<> texDist(0, availableTextures.size() - 1);
+
+			std::uniform_real_distribution<float> colorDist(0.0f, 1.0f);
+
+			int sizeX = 20;
+			int sizeY = 20;
+			int sizeZ = 20;
+			float spacing = 2.7f;
+
+			for (int x = 0; x < sizeX; ++x)
+			{
+				for (int y = 0; y < sizeY; ++y)
+				{
+					for (int z = 0; z < sizeZ; ++z)
+					{
+						auto obj = m_registry.CreateEntity();
+
+						float posX = x * spacing;
+						float posY = y * spacing;
+						float posZ = z * spacing;
+						m_registry.EmplaceComponent<TransformComponent>(obj, posX, posY, posZ);
+
+						std::string randomMesh = availableMeshes[meshDist(gen)];
+						std::string randomTexture = availableTextures[texDist(gen)];
+
+						m_registry.EmplaceComponent<MeshComponent>(obj, m_ResourceManager->getMesh(randomMesh));
+
+
+						glm::vec3 randomDiffuse(colorDist(gen), colorDist(gen), colorDist(gen));
+
+						glm::vec3 randomAmbient(colorDist(gen), colorDist(gen), colorDist(gen));
+
+						glm::vec3 randomSpecular(colorDist(gen), colorDist(gen), colorDist(gen));
+
+						std::uniform_real_distribution<float> shininessDist(1.0f, 128.0f);
+						float randomShininess = shininessDist(gen);
+
+						m_registry.EmplaceComponent<MaterialComponent>(
+							obj,
+							randomAmbient,
+							randomDiffuse,
+							randomSpecular,
+							randomShininess,
+							randomTexture
+						);
+					}
+				}
+			}
+
 			auto obj1 = m_registry.CreateEntity();
 
 			m_registry.EmplaceComponent<NameComponent>(obj1, "Obj1");
 			m_registry.EmplaceComponent<TransformComponent>(obj1, 1.5f, 1.f, 2.5f);
-			m_registry.EmplaceComponent<MeshComponent>(obj1, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MeshComponent>(obj1, m_ResourceManager->getMesh("Octahedron"));
 			m_registry.EmplaceComponent<MaterialComponent>(obj1, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
 
 			auto obj2 = m_registry.CreateEntity();
 
 			m_registry.EmplaceComponent<NameComponent>(obj2, "Obj2");
 			m_registry.EmplaceComponent<TransformComponent>(obj2, 1.5f, 1.f, 1.0f);
-			m_registry.EmplaceComponent<MeshComponent>(obj2, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MeshComponent>(obj2, m_ResourceManager->getMesh("Sphere"));
 			m_registry.EmplaceComponent<MaterialComponent>(obj2, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
 
 			auto obj3 = m_registry.CreateEntity();
@@ -105,14 +178,14 @@ namespace Engine {
 
 			m_registry.EmplaceComponent<NameComponent>(obj4, "Obj4");
 			m_registry.EmplaceComponent<TransformComponent>(obj4, -1.5f, 1.f, 2.5f);
-			m_registry.EmplaceComponent<MeshComponent>(obj4, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MeshComponent>(obj4, m_ResourceManager->getMesh("Icosahedron"));
 			m_registry.EmplaceComponent<MaterialComponent>(obj4, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
 
 			auto obj5 = m_registry.CreateEntity();
 
 			m_registry.EmplaceComponent<NameComponent>(obj5, "Obj5");
 			m_registry.EmplaceComponent<TransformComponent>(obj5, -1.5f, 1.f, 1.0f);
-			m_registry.EmplaceComponent<MeshComponent>(obj5, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MeshComponent>(obj5, m_ResourceManager->getMesh("Tetrahedron"));
 			m_registry.EmplaceComponent<MaterialComponent>(obj5, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
 			m_registry.EmplaceComponent<DataBaseConnectComponent>(obj5);
 
@@ -120,7 +193,7 @@ namespace Engine {
 
 			m_registry.EmplaceComponent<NameComponent>(obj6, "Obj6");
 			m_registry.EmplaceComponent<TransformComponent>(obj6, -1.5f, 1.f, -.5f);
-			m_registry.EmplaceComponent<MeshComponent>(obj6, m_ResourceManager->getMesh("Cube"));
+			m_registry.EmplaceComponent<MeshComponent>(obj6, m_ResourceManager->getMesh("Dodecahedron"));
 			m_registry.EmplaceComponent<MaterialComponent>(obj6, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f), 1.f, "DiamondPlate");
 
 			
@@ -138,6 +211,11 @@ namespace Engine {
 
 			//Mashes
 			m_ResourceManager->loadMesh("Cube", MeshGenerator::Cube(1.0f));
+			m_ResourceManager->loadMesh("Tetrahedron", MeshGenerator::Tetrahedron(1.0f));
+			m_ResourceManager->loadMesh("Octahedron", MeshGenerator::Octahedron(1.0f));
+			m_ResourceManager->loadMesh("Icosahedron", MeshGenerator::Icosahedron(1.0f));
+			m_ResourceManager->loadMesh("Dodecahedron", MeshGenerator::Dodecahedron(1.0f));
+			m_ResourceManager->loadMesh("Sphere", MeshGenerator::Sphere(0.75f, 8, 8));
 			
 
 			m_ResourceManager->loadTexture("NoTexture", "Textures/notexture.png");

@@ -32,19 +32,7 @@ namespace Engine
         virtual bool   Empty() const noexcept = 0;
     };
 
-    // =========================================================================
-    //  SparseSet<T>
-    //
-    //  Key design decisions vs original:
-    //  1. m_sparse is now unordered_map → no memory explosion for sparse IDs.
-    //  2. Non-copyable, explicitly movable — prevents silent invariant breaks.
-    //  3. Remove() returns bool — caller knows whether entity existed.
-    //  4. Get() / GetChecked() split — nullptr-return vs exception.
-    //  5. Iterator yields (EntityID, T&) pairs — no more parallel indexing.
-    //  6. Components() returns std::span — safe, no raw vector leak.
-    //  7. GetData() mutable overload removed — external code can't break invariants.
-    //  8. ForEach() convenience helper added.
-    // =========================================================================
+
     template <typename T>
     class SparseSet final : public ISparseSet
     {
@@ -302,5 +290,4 @@ namespace Engine
                 m_sparse[m_denseToEntity[i]] = i;
         }
     };
-
 }
