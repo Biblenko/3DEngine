@@ -225,6 +225,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SparseSet.h" />
+    <ClInclude Include="SpinAroundSystem.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="TextRenderSystem.h" />
     <ClInclude Include="stb_image.h" />
@@ -254,6 +255,7 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="SpinAroundSystem.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TextRenderSystem.cpp" />
     <ClCompile Include="Texture2D.cpp" />

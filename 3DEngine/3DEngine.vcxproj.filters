@@ -161,6 +161,9 @@
     <ClInclude Include="CEntityPropertyPane.h">
       <Filter>GUI\EntityInspector</Filter>
     </ClInclude>
+    <ClInclude Include="SpinAroundSystem.h">
+      <Filter>Core\Engine\Systems\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEngine.cpp">
@@ -222,6 +225,9 @@
     </ClCompile>
     <ClCompile Include="CEntityPropertyPane.cpp">
       <Filter>GUI\EntityInspector</Filter>
+    </ClCompile>
+    <ClCompile Include="SpinAroundSystem.cpp">
+      <Filter>Core\Engine\Systems\Logic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

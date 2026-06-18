@@ -9,23 +9,24 @@
 namespace Engine
 {
     // =========================================================================
-    //  Registry
-    //  Owns all component pools and manages entity lifetimes.
+    //  Registry (Реєстр)
+    //  Володіє всіма пулами компонентів та керує життєвим циклом сутностей.
     // =========================================================================
     class Registry
     {
-        // unique_ptr: Registry is the sole owner — no shared ownership needed
+        // unique_ptr: Реєстр є єдиним власником пулів — спільне володіння (shared) не потрібне
         using PoolMap = std::unordered_map<std::type_index, std::unique_ptr<ISparseSet>>;
 
-        EntityID  m_nextEntityId = 0;
-        std::vector<EntityID> m_freeEntities;
-        PoolMap   m_componentSets;
+        EntityID              m_nextEntityId = 0;   // Ідентифікатор для генерації наступної нової сутності
+        std::vector<EntityID> m_freeEntities;       // Список раніше видалених ID для їхнього повторного використання
+        PoolMap               m_componentSets;      // Хеш-карта пулів компонентів, де ключ — тип компонента
 
     public:
         // ──────────────────────────────────────────────────────────────────
-        //  Entity lifecycle
+        //  Життєвий цикл сутностей
         // ──────────────────────────────────────────────────────────────────
 
+        /// Створює нову сутність. Повертає раніше видалений ID, якщо такий є, інакше генерує новий.
         EntityID CreateEntity()
         {
             if (!m_freeEntities.empty())
@@ -37,6 +38,7 @@ namespace Engine
             return m_nextEntityId++;
         }
 
+        /// Повністю видаляє сутність з системи, очищаючи її компоненти в усіх пулах та резервуючи ID для повторного використання.
         void DestroyEntity(EntityID entity)
         {
             for (auto& [type, pool] : m_componentSets)
@@ -45,6 +47,7 @@ namespace Engine
             m_freeEntities.push_back(entity);
         }
 
+        /// Скидає стан реєстру: очищає всі пули компонентів, обнуляє лічильник ID та список вільних сутностей.
         void Clear()
         {
             for (auto& [type, pool] : m_componentSets)
@@ -55,10 +58,10 @@ namespace Engine
         }
 
         // ──────────────────────────────────────────────────────────────────
-        //  Pool access (internal)
+        //  Доступ до пулів (внутрішні методи)
         //
-        //  GetPool()     — creates pool if missing, use for writes
-        //  TryGetPool()  — returns nullptr if missing, use for reads
+        //  GetPool()    — створює пул, якщо він відсутній (для операцій запису)
+        //  TryGetPool() — повертає nullptr, якщо пулу немає (для операцій читання)
         // ──────────────────────────────────────────────────────────────────
     private:
         template<typename T>
@@ -89,17 +92,17 @@ namespace Engine
         // ──────────────────────────────────────────────────────────────────
     public:
         // ──────────────────────────────────────────────────────────────────
-        //  Component operations
+        //  Операції з компонентами
         // ──────────────────────────────────────────────────────────────────
 
-        /// Add or replace a component on entity.
+        /// Додає або замінює компонент типу T для сутності, конструюючи його на місці (inplace).
         template<typename T, typename... Args>
         T& EmplaceComponent(EntityID entity, Args&&... args)
         {
             return GetPool<T>().Emplace(entity, std::forward<Args>(args)...);
         }
 
-        /// Remove a component from entity. Returns true if it existed.
+        /// Видаляє компонент типу T із сутності. Повертає true, якщо компонент існував і був видалений.
         template<typename T>
         bool RemoveComponent(EntityID entity)
         {
@@ -107,7 +110,7 @@ namespace Engine
             return pool && pool->Remove(entity);
         }
 
-        /// Returns nullptr if entity has no component of type T.
+        /// Повертає вказівник на компонент типу T для сутності, або nullptr, якщо компонент відсутній.
         template<typename T>
         [[nodiscard]] T* GetComponent(EntityID entity)
         {
@@ -115,6 +118,7 @@ namespace Engine
             return pool ? pool->Get(entity) : nullptr;
         }
 
+        /// Константна версія GetComponent для безпечного читання компонентів без модифікації.
         template<typename T>
         [[nodiscard]] const T* GetComponent(EntityID entity) const
         {
@@ -122,6 +126,7 @@ namespace Engine
             return pool ? pool->Get(entity) : nullptr;
         }
 
+        /// Перевіряє, чи володіє сутність компонентом типу T.
         template<typename T>
         [[nodiscard]] bool HasComponent(EntityID entity) const
         {
@@ -130,16 +135,17 @@ namespace Engine
         }
 
         // ──────────────────────────────────────────────────────────────────
-        //  Single-type views — direct span access, zero overhead
+        //  Однотипні представлення (Views) — прямий доступ до масивів без накладних витрат
         // ──────────────────────────────────────────────────────────────────
 
-        /// Returns span over tightly-packed component array.
+        /// Повертає std::span (неперервний масив) для швидкої ітерації по всіх компонентах типу T.
         template<typename T>
         [[nodiscard]] std::span<T> Components()
         {
             return GetPool<T>().Components();
         }
 
+        /// Константна версія для отримання неперервного масиву компонентів типу T.
         template<typename T>
         [[nodiscard]] std::span<const T> Components() const
         {
@@ -147,7 +153,7 @@ namespace Engine
             return pool ? pool->Components() : std::span<const T>{};
         }
 
-        /// Returns the entity list parallel to Components<T>().
+        /// Повертає список ID сутностей, який повністю паралельний масиву, отриманому з Components<T>().
         template<typename T>
         [[nodiscard]] const std::vector<EntityID>& Entities() const
         {
@@ -157,7 +163,7 @@ namespace Engine
         }
 
         // ──────────────────────────────────────────────────────────────────
-        //  Multi-component iteration  Each<T1, T2, ...>(func)
+        //  Мультикомпонентна ітерація: Each<T1, T2, ...>(func)
         // ──────────────────────────────────────────────────────────────────
         template<typename T1, typename... Tn, typename Func>
         void Each(Func&& func)
@@ -166,7 +172,7 @@ namespace Engine
 
             if constexpr (sizeof...(Tn) == 0)
             {
-                // Fast path: single component, no Has() checks needed
+                // Швидкий шлях: лише один компонент, додаткові перевірки Has() не потрібні
                 for (auto [entity, comp] : pool1)
                 {
                     if constexpr (std::is_invocable_v<Func, EntityID, T1&>)
@@ -177,24 +183,24 @@ namespace Engine
             }
             else
             {
-                // Cache pointers to all secondary component pools once before the loop
+                // Кешуємо вказівники на всі другорядні пули компонентів один раз перед початком циклу
                 auto otherPools = std::make_tuple(TryGetPool<Tn>()...);
 
-                // If any required pool is missing, there is nothing to iterate
+                // Якщо бодай один із необхідних пулів взагалі відсутній у реєстрі — ітерація не має сенсу
                 bool allExist = std::apply([](auto*... pools) { return ((pools != nullptr) && ...); }, otherPools);
                 if (!allExist) return;
 
-                // Main iteration loop over the primary pool
+                // Основний цикл ітерації по головному пулу (pool1)
                 for (auto [entity, comp1] : pool1)
                 {
-                    // Fetch pointers to secondary components using a single lookup per pool
+                    // Отримуємо вказівники на другорядні компоненти за допомогою одного пошуку на пул
                     auto componentPtrs = std::make_tuple(std::get<SparseSet<Tn>*>(otherPools)->Get(entity)...);
 
-                    // Validate that the entity contains all required components
+                    // Перевіряємо, чи поточна сутність містить абсолютно всі запитувані компоненти
                     bool hasAll = std::apply([](auto*... ptrs) { return ((ptrs != nullptr) && ...); }, componentPtrs);
                     if (!hasAll) continue;
 
-                    // Invoke user callback with or without EntityID based on its signature
+                    // Викликаємо користувацьку функцію (колбек) залежно від її сигнатури (з EntityID чи без)
                     if constexpr (std::is_invocable_v<Func, EntityID, T1&, Tn&...>)
                     {
                         std::apply([&](auto*... ptrs) {
@@ -211,5 +217,4 @@ namespace Engine
             }
         }
     };
-
 }

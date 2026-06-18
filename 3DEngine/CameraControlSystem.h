@@ -16,6 +16,7 @@ namespace Engine {
 		void ChangeActiveCamera(ECS& e, EntityID newActiveCamera);
 
 		void NextCamera(ECS& e);
+		void PreviousCamera(ECS& e);
 	};
 
 }

@@ -285,4 +285,17 @@ namespace Engine
     struct DataBaseConnectComponent {
 
     };
+
+    struct SpinAroundComponent
+    {
+        EntityID m_targetEntity;
+        float m_distance;
+        float m_speed;
+        glm::vec3 m_axis;
+        glm::vec3 m_currentOffset;
+
+        SpinAroundComponent(EntityID target, float distance, float speed, const glm::vec3& axis = glm::vec3(0.0f, 1.0f, 0.0f), const glm::vec3& initialOffset = glm::vec3(0.0f))
+            : m_targetEntity(target), m_distance(distance), m_speed(speed), m_axis(glm::normalize(axis)), m_currentOffset(initialOffset) {
+        }
+    };
 }
